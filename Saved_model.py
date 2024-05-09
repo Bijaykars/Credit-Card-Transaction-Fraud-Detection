@@ -2,7 +2,6 @@ import pickle
 import pandas as pd
 import streamlit as st
 from geopy.geocoders import Nominatim
-import numpy as np
 
 
 with open(r"C:\Users\karki\OneDrive\Desktop\GitHub_repo\Credit-Card-Transaction-Fraud-Detection\credit_card_model.pkl", "rb") as file:
@@ -55,14 +54,12 @@ day_of_week = df['trans_date_trans_time'].dt.dayofweek
 month = df['trans_date_trans_time'].dt.month
 quarter = df['trans_date_trans_time'].dt.quarter
 
-gender_F = 1
-gender_M = 0
+print(merchant)
 
-
-merchant_encoded = label_encoder.transform([merchant])[0]
-category_encoded = label_encoder.transform([category])[0]
-job_encoded = label_encoder.transform([job])[0]
-user_input = [cc_num, merchant_encoded, category_encoded, amount, zip, lat, lon, city_pop, job_encoded, merch_lat, merch_long, age[0], hour[0], day[0], day_of_week[0], quarter[0], gender_F, gender_M]
+merchant_encoded = label_encoder.fit_transform([merchant])
+category_encoded = label_encoder.fit_transform(category)
+job_encoded = label_encoder.fit_transform(job)
+user_input = [cc_num, merchant_encoded, category_encoded, amount, zip, lat, lon, city_pop, job_encoded, merch_lat, merch_long, age, hour, day, day_of_week, quarter]
 user_input = np.array(user_input).reshape(1, -1)  # Reshape to a 2D array
 
 # Make prediction
